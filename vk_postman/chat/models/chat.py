@@ -1,8 +1,9 @@
 from django.db import models
-from vk_postman.chat.models import VkUser, TelegramUser
+from chat.models import VkUser, TelegramUser
 
 
 class Chat(models.Model):
 
     vk_user = models.ForeignKey(VkUser)
-    TelegramUser = models.ForeignKey(TelegramUser)
+    telegram_user = models.ForeignKey(TelegramUser)
+    is_active = models.BooleanField(default=True, blank=True)

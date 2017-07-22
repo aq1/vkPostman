@@ -13,13 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
-from django.contrib import admin
+from django.conf.urls import url
+from django.conf import settings
 
-from chat import urls as chat_urls
+from chat.views import (
+    telegram_webhook
+)
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^chat/', include(chat_urls)),
+    url(r'^telegram_webhook/{}$'.format(settings.TELEGRAM_TOKEN), telegram_webhook, name='telegram_webhook'),
 ]
