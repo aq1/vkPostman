@@ -13,3 +13,4 @@ DATABASES = {
 }
 
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
+VK_TOKEN = os.environ.get('VK_TOKEN', '')

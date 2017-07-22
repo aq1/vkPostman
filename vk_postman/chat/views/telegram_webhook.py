@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 from chat.telegram.commands import execute_command
+from chat.vk.vk_chat import send_message_to_vk_user
 
 
 @csrf_exempt
@@ -23,5 +24,5 @@ def telegram_webhook(request):
             execute_command(command, telegram_user_id, args)
             return HttpResponse()
 
-
+    send_message_to_vk_user(telegram_user_id, text)
     return HttpResponse()
