@@ -2,7 +2,7 @@ from django.conf import settings
 
 import requests
 
-from chat.vk.vk_chat import send_message_to_telegram_user
+from chat.vk.vk_chat import send_message_from_vk_to_telegram
 
 
 MESSAGE_FLAGS = [
@@ -46,4 +46,4 @@ def watch_chat():
         ts = r['ts']
         for u in r['updates']:
             if u[0] == 4 and not has_flag(u[2], 2):
-                send_message_to_telegram_user(u)
+                send_message_from_vk_to_telegram(u)
