@@ -8,7 +8,6 @@ class Connect(CommandBase):
     _description = 'Start a chat with user.'
     _SUCCESS_MSG = 'You are now chatting with {vk_user}'
     _USER_IS_BUSY = 'Sorry! User you are trying to connect is already connected to another telegram user. Try later.'
-    _USER_IS_BUSY = 'Sorry! User you are trying to connect is already connected to another telegram user. Try later.'
 
     @classmethod
     def _execute(cls, telegram_user_id, *args):
@@ -24,7 +23,7 @@ class Connect(CommandBase):
         if Chat.objects.filter(
             vk_user=vk_user,
             is_active=True
-        ).exclude(telegram_user=telegram_user).exist():
+        ).exclude(telegram_user=telegram_user).exists():
             return False, cls._USER_IS_BUSY
 
         Chat.objects.filter(
