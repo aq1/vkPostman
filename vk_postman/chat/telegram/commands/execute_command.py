@@ -14,7 +14,8 @@ for attr in dir(commands):
 def execute_command(command, telegram_user_id, args=None):
     command = command.replace('/', '')
     if command not in AVAILABLE_COMMANDS:
-        raise ValueError('No command with the name {} found'.format(command))
+        commands.CommandBase.send_message(telegram_user_id, 'Sorry! No command with the name {} found'.format(command))
+        return
 
     if args is None:
         args = []

@@ -6,17 +6,17 @@ from chat.vk.vk_chat import send_message_to_telegram_user
 
 
 MESSAGE_FLAGS = [
-    65536, # HIDDEN
-    512,   # MEDIA
-    256,   # FIXED
-    128,   # DELETED
-    64,    # SPAM
-    32,    # FRIENDS
-    16,    # CHAT
-    8,     # IMPORTANT
-    4,     # REPLIED
-    2,     # OUTBOX
-    1,     # UNREAD
+    65536,  # HIDDEN
+    512,    # MEDIA
+    256,    # FIXED
+    128,    # DELETED
+    64,     # SPAM
+    32,     # FRIENDS
+    16,     # CHAT
+    8,      # IMPORTANT
+    4,      # REPLIED
+    2,      # OUTBOX
+    1,      # UNREAD
 ]
 
 
