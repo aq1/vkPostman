@@ -20,9 +20,12 @@ class CommandBase:
 
     @classmethod
     def _execute(cls, telegram_user_id, *args):
-        pass
+        return True, None
 
     @classmethod
     def execute(cls, telegram_user_id, *args):
-        cls._execute(telegram_user_id, *args)
-        cls.send_message(telegram_user_id, cls._SUCCESS_MSG.format(vk_user=cls._get_vk_user_url(args[0])))
+        result, msg = cls._execute(telegram_user_id, *args)
+        if msg is None:
+            msg = cls._SUCCESS_MSG.format(vk_user=cls._get_vk_user_url(args[0]))
+
+        cls.send_message(telegram_user_id, msg)

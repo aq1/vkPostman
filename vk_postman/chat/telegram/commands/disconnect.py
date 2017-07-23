@@ -18,3 +18,5 @@ class Disconnect(CommandBase):
             telegram_user=telegram_user,
             vk_user=vk_user,
         ).update(is_active=False)
+
+        return True, None
