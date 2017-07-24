@@ -16,7 +16,11 @@ class Connect(CommandBase):
         Then disconnect from previous chats.
         Then connect to a new chat.
         """
-        vk_user_id = args[0]
+        try:
+            vk_user_id = args[0]
+        except IndexError:
+            return False, 'Vk user\'s id is required'
+
         telegram_user, _ = TelegramUser.objects.get_or_create(id=telegram_user_id)
         vk_user, _ = VkUser.objects.get_or_create(id=vk_user_id)
 
