@@ -6,7 +6,7 @@ from chat.telegram.commands import CommandBase
 class Disconnect(CommandBase):
 
     _description = 'Close currently active chat.'
-    _SUCCESS_MSG = 'You are exited chat with {vk_user}'
+    _SUCCESS_MSG = 'You have exited chat with {vk_user}'
 
     @classmethod
     def _execute(cls, telegram_user_id, *args):
