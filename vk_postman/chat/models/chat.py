@@ -8,3 +8,6 @@ class Chat(models.Model):
     telegram_user = models.ForeignKey(TelegramUser)
     telegram_active = models.BooleanField(default=True, blank=True)
     vk_active = models.BooleanField(default=True, blank=True)
+
+    def is_active(self):
+        return self.telegram_active and self.vk_active

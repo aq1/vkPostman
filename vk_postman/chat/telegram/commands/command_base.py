@@ -34,6 +34,6 @@ class CommandBase:
     def execute(cls, telegram_user_id, *args):
         result, msg = cls._execute(telegram_user_id, *args)
         if msg is None:
-            msg = cls._create_success_message(args)
+            msg = cls._create_success_message(*args)
 
         cls.send_message(telegram_user_id, msg)
