@@ -33,7 +33,6 @@ class Connect(CommandBase):
 
         Chat.objects.filter(
             telegram_user=telegram_user,
-            vk_user=vk_user,
         ).update(telegram_active=False, vk_active=False)
 
         chat, created = Chat.objects.get_or_create(
