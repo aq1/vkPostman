@@ -10,13 +10,18 @@ class Disconnect(CommandBase):
 
     @classmethod
     def _execute(cls, telegram_user_id, *args):
-        vk_user_id = args[0]
         telegram_user, _ = TelegramUser.objects.get_or_create(id=telegram_user_id)
-        vk_user, _ = VkUser.objects.get_or_create(id=vk_user_id)
 
-        Chat.objects.filter(
-            telegram_user=telegram_user,
-            vk_user=vk_user,
-        ).update(is_active=False)
+        try:
+            chat = Chat.objects.get(
+                telegram_user=telegram_user,
+                telegram_active=True,
+                vk_active=True,
+            )
+        except Chat.DoesNotExist:
+            return True, 'You are not connected to any vk user'
+        chat.telegram_active = False
+        chat.vk_active = False
+        chat.save()
 
-        return True, None
+        return True, cls._SUCCESS_MSG.format(vk_user=cls._get_vk_user_url(chat.vk_user_id))

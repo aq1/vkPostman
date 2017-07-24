@@ -14,7 +14,7 @@ class CommandBase:
         return 'https://vk.com/id{}'.format(vk_user_id)
 
     @classmethod
-    def _create_success_message(cls, args):
+    def _create_success_message(cls, *args):
         try:
             vk_user = cls._get_vk_user_url(args[0])
         except IndexError:

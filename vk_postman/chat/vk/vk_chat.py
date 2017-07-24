@@ -18,7 +18,11 @@ def send_message_from_vk_to_telegram(data):
     """
     vk_user_id = data[3]
     try:
-        chat = Chat.objects.get(vk_user_id=vk_user_id, is_active=True)
+        chat = Chat.objects.get(
+            vk_user_id=vk_user_id,
+            telegram_active=True,
+            vk_active=True,
+        )
     except Chat.DoesNotExist:
         send_message_to_vk_user(vk_user_id, 'Sorry! No active chats found for you.')
     except Chat.MultipleObjectsReturned:
@@ -38,7 +42,11 @@ def send_message_to_vk_user(vk_user_id, message):
 
 def send_message_from_telegram_to_vk(telegram_user_id, message):
     try:
-        chat = Chat.objects.get(telegram_user_id=telegram_user_id, is_active=True)
+        chat = Chat.objects.get(
+            telegram_user_id=telegram_user_id,
+            telegram_active=True,
+            vk_active=True,
+        )
     except Chat.DoesNotExist:
         return
 

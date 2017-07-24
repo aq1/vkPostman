@@ -22,22 +22,24 @@ class Connect(CommandBase):
 
         if Chat.objects.filter(
             vk_user=vk_user,
-            is_active=True
+            telegram_active=True,
+            vk_active=True,
         ).exclude(telegram_user=telegram_user).exists():
             return False, cls._USER_IS_BUSY
 
         Chat.objects.filter(
             telegram_user=telegram_user,
             vk_user=vk_user,
-        ).update(is_active=False)
+        ).update(telegram_active=False, vk_active=False)
 
         chat, created = Chat.objects.get_or_create(
             telegram_user=telegram_user,
             vk_user=vk_user,
         )
 
-        if not (created or chat.is_active):
-            chat.is_active = True
+        if not created and not (chat.telegram_active and chat.vk_active):
+            chat.telegram_active = True
+            chat.vk_active = True
             chat.save()
 
         return True, None
