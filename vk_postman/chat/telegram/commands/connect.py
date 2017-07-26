@@ -10,7 +10,7 @@ class Connect(CommandBase):
     _USER_IS_BUSY = 'Sorry! User you are trying to connect is already connected to another telegram user. Try later.'
 
     @classmethod
-    def _execute(cls, telegram_user_id, *args):
+    def _execute(cls, from_, args):
         """
         First, check if vk user is free to chat and is not connected to another telegram user.
         Then disconnect from previous chats.
@@ -21,7 +21,13 @@ class Connect(CommandBase):
         except IndexError:
             return False, 'Vk user\'s id is required'
 
-        telegram_user, _ = TelegramUser.objects.get_or_create(id=telegram_user_id)
+        telegram_user, tg_user_created = TelegramUser.objects.get_or_create(
+            id=from_['id'],
+            defaults={
+                'last_name': from_['last_name'],
+                'first_name': from_['first_name'],
+            }
+        )
         vk_user, _ = VkUser.objects.get_or_create(id=vk_user_id)
 
         if Chat.objects.filter(

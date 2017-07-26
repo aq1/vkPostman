@@ -14,7 +14,7 @@ class CommandBase:
         return 'https://vk.com/id{}'.format(vk_user_id)
 
     @classmethod
-    def _create_success_message(cls, *args):
+    def _create_success_message(cls, args):
         try:
             vk_user = cls._get_vk_user_url(args[0])
         except IndexError:
@@ -22,7 +22,7 @@ class CommandBase:
         return cls._SUCCESS_MSG.format(vk_user=vk_user)
 
     @classmethod
-    def _execute(cls, telegram_user_id, *args):
+    def _execute(cls, from_, args):
         return True, None
 
     @staticmethod
@@ -31,9 +31,9 @@ class CommandBase:
         return requests.post(url, data={'chat_id': telegram_user_id, 'text': text, 'parse_mode': 'Markdown'})
 
     @classmethod
-    def execute(cls, telegram_user_id, *args):
-        result, msg = cls._execute(telegram_user_id, *args)
+    def execute(cls, from_, args):
+        result, msg = cls._execute(from_, args)
         if msg is None:
-            msg = cls._create_success_message(*args)
+            msg = cls._create_success_message(args)
 
-        cls.send_message(telegram_user_id, msg)
+        cls.send_message(from_['id'], msg)

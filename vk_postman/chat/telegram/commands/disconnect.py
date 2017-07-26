@@ -9,7 +9,7 @@ class Disconnect(CommandBase):
     _SUCCESS_MSG = 'You have exited chat with {vk_user}'
 
     @classmethod
-    def _execute(cls, telegram_user_id, *args):
+    def _execute(cls, telegram_user_id, args):
         telegram_user, _ = TelegramUser.objects.get_or_create(id=telegram_user_id)
 
         try:

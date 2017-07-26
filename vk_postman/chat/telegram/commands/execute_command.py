@@ -11,13 +11,13 @@ for attr in dir(commands):
         pass
 
 
-def execute_command(command, telegram_user_id, args=None):
+def execute_command(from_, command, args=None):
     command = command.replace('/', '')
     if command not in AVAILABLE_COMMANDS:
-        commands.CommandBase.send_message(telegram_user_id, 'Sorry! No command with the name {} found'.format(command))
+        commands.CommandBase.send_message(from_['id'], 'Sorry! No command with the name {} found'.format(command))
         return
 
     if args is None:
         args = []
 
-    AVAILABLE_COMMANDS[command].execute(telegram_user_id, *args)
+    AVAILABLE_COMMANDS[command].execute(from_, args)
