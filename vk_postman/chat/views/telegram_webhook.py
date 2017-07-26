@@ -16,6 +16,8 @@ def telegram_webhook(request):
     except (KeyError, json.JSONDecodeError):
         return HttpResponse(status=400)
 
+    import pprint
+    pprint.pprint(data)
     text = data['message']['text']
     for entiy in data['message'].get('entities', []):
         if entiy.get('type') == 'bot_command':
