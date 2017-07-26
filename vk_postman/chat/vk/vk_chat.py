@@ -29,7 +29,7 @@ def send_message_from_vk_to_telegram(data):
 
     text = '{} {}\n{}'.format(
         chat.vk_user.first_name,
-        chat.vk_active.last_name,
+        chat.vk_user.last_name,
         data[5]
     )
     CommandBase.send_message(chat.telegram_user_id, text=text)
