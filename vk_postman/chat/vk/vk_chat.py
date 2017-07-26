@@ -15,11 +15,11 @@ def send_message_from_vk_to_telegram(data):
     """
     vk_user_id = data[3]
     try:
-        chat = Chat.objects.get(
+        chat = Chat.objects.select_related('vk_user').get(
             vk_user_id=vk_user_id,
             telegram_active=True,
             vk_active=True,
-        ).select_related('vk_user')
+        )
     except Chat.DoesNotExist:
         send_message_to_vk_user(vk_user_id, 'Sorry! No active chats found for you.')
         return
@@ -48,11 +48,11 @@ def send_message_to_vk_user(vk_user_id, message):
 
 def send_message_from_telegram_to_vk(telegram_user_id, message):
     try:
-        chat = Chat.objects.get(
+        chat = Chat.objects.select_related('telegram_user').get(
             telegram_user_id=telegram_user_id,
             telegram_active=True,
             vk_active=True,
-        ).select_related('telegram_user')
+        )
     except Chat.DoesNotExist:
         return
 
