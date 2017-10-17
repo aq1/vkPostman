@@ -5,4 +5,4 @@ from chat.telegram.commands.start import Start
 from chat.telegram.commands.help import Help
 from chat.telegram.commands.chats import Chats
 
-from chat.telegram.commands.execute_command import execute_command
+from chat.telegram.commands.execute_command import execute_command, AVAILABLE_COMMANDS

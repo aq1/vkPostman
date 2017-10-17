@@ -8,3 +8,5 @@ class Start(CommandBase):
         'I will create a chat between you and vk user.\n'
         'Type /help to see available commands.\n'
     )
+
+    _description = 'Start working with the bot'

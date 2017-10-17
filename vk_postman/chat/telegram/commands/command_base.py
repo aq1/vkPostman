@@ -3,9 +3,18 @@ from django.conf import settings
 import requests
 
 
-class CommandBase:
+class StrMC(type):
+    """
+    Class creates neat string representaion for himself,
+    not for it instances only    
+    """
+    def __str__(self):
+        return '{} - {}'.format(self.__name__.lower(), self._description)
 
-    description = ''
+
+class CommandBase(metaclass=StrMC):
+
+    _description = ''
     _SUCCESS_MSG = ''
     _send_feedback = False
 

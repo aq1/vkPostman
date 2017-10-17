@@ -1,7 +1,9 @@
+from collections import OrderedDict
+
 from chat.telegram import commands
 
 
-AVAILABLE_COMMANDS = {}
+AVAILABLE_COMMANDS = OrderedDict()
 for attr in dir(commands):
     instance = getattr(commands, attr)
     try:
