@@ -5,7 +5,7 @@ from chat.telegram.commands import CommandBase
 
 class Chats(CommandBase):
 
-    _description = 'Show my chats'
+    _description = 'Show my chats.'
     _SUCCESS_MSG = ''
 
     @classmethod
