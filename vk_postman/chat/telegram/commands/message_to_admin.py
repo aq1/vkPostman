@@ -11,9 +11,10 @@ class MessageToAdmin(CommandBase):
 
     @staticmethod
     def _format_message(from_, message):
-        return 'Message from user "{} {}" to admin.\n{}'.format(
+        return 'Message from user "{} {} ({})" to admin.\n{}'.format(
             from_['first_name'],
             from_['last_name'],
+            from_['id'],
             message,
         )
 

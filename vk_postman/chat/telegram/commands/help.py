@@ -6,5 +6,6 @@ class Help(CommandBase):
     _SUCCESS_MSG = (
         'Okay, let\'s start.\n'
         'Before sending a message to a vk user, you must connect to him (create a chat).\n'
-        'Type /connect "vk_user_id" to connect!'
+        'Type /connect "vk_user_id" to connect!\n'
+        'You can write to admins with /write_to_admin <Your message here> command.'
     )
