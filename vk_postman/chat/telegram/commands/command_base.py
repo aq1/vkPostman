@@ -8,23 +8,19 @@ import requests
 class StrMC(type):
     """
     Class creates neat string representaion for himself,
-    not for it instances only    
+    not for it instances only.
+    Also, changes class name to underscore.
     """
 
     def __new__(cls, class_name, *args, **kwargs):
         class_name = re.sub(r'([A-Z]{1})', r'_\1', class_name).lower().lstrip('_')
         return super().__new__(cls, class_name, *args, **kwargs)
 
-    @property
-    def __name(cls):
-        return re.sub(r'([A-Z]{1})', r'_\1', cls.__name__).lower().lstrip('_')
-
     def __str__(cls):
         return '{} - {}'.format(cls.__name__, cls._description)
 
 
 class CommandBase(metaclass=StrMC):
-
     _description = ''
     _SUCCESS_MSG = ''
     _send_feedback = False
