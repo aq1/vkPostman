@@ -21,7 +21,7 @@ class MessageToAdmin(CommandBase):
     @classmethod
     def _execute(cls, from_, args):
         try:
-            message = args[0]
+            message = ' '.join(args)
         except IndexError:
             return False, 'Message is required.'
 

@@ -14,7 +14,7 @@ for attr in dir(commands):
 
 
 def execute_command(from_, command, args=None):
-    command = command.replace('/', '')
+    command = command.lstrip('/')
     if command not in AVAILABLE_COMMANDS:
         commands.CommandBase.send_message(from_['id'], 'Sorry! No command with the name {} found'.format(command))
         return
