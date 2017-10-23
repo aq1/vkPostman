@@ -61,5 +61,4 @@ class CommandBase(metaclass=StrMC):
             msg = cls._create_success_message(args)
             if not msg:
                 return
-        print(result, msg)
         cls.send_message(from_['id'], msg)
