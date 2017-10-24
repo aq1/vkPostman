@@ -2,6 +2,7 @@ import os
 import dj_database_url
 
 
+DEBUG = bool(os.environ.get('DEBUG', False))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 if os.environ.get('ALLOWED_HOSTS'):
