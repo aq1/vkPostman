@@ -33,6 +33,13 @@ def send_message_from_vk_to_telegram(data):
         data[5]
     )
     CommandBase.send_message(chat.telegram_user_id, text=text)
+    vk_api.call(
+        'post',
+        'messages.markAsRead',
+        data={
+            'user_id': vk_user_id,
+        }
+    )
 
 
 def send_message_to_vk_user(vk_user_id, message):
