@@ -11,3 +11,10 @@ class Chat(models.Model):
 
     def is_active(self):
         return self.telegram_active and self.vk_active
+
+    @classmethod
+    def disconnect(cls, ids=None):
+        chats = cls.objects.all()
+        if ids:
+            chats = chats.filter(id__in=ids)
+        return chats.update(vk_active=False, telegram_active=False)
