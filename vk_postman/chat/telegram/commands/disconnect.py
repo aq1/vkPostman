@@ -9,8 +9,8 @@ class Disconnect(CommandBase):
     _SUCCESS_MSG = 'You have exited chat with {vk_user}'
 
     @classmethod
-    def _execute(cls, telegram_user_id, args):
-        telegram_user, _ = TelegramUser.objects.get_or_create(id=telegram_user_id)
+    def _execute(cls, from_, args):
+        telegram_user, _ = TelegramUser.objects.get_or_create(id=from_['id'])
 
         try:
             chat = Chat.objects.get(
@@ -21,7 +21,7 @@ class Disconnect(CommandBase):
         except Chat.DoesNotExist:
             return True, 'You are not connected to any vk user'
         except Chat.MultipleObjectsReturned:
-            Chat.objects.filter(telegram_user=telegram_user_id).update(
+            Chat.objects.filter(telegram_user=from_['id']).update(
                 telegram_active=False,
                 vk_active=False,
             )
