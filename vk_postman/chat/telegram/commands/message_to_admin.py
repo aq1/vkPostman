@@ -23,8 +23,8 @@ class MessageToAdmin(CommandBase):
         try:
             message = ' '.join(args)
         except IndexError:
-            return False, 'Message is required.'
+            return cls._execution_result('Message is required.')
 
         message = cls._format_message(from_, message)
         vk_chat.send_message_to_vk_user(settings.ADMIN_ID, message)
-        return True, None
+        return cls._execution_result(True)

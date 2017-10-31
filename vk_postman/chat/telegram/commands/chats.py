@@ -1,3 +1,5 @@
+import json
+
 from chat.models import Chat
 
 from chat.telegram.commands import CommandBase
@@ -10,12 +12,33 @@ class Chats(CommandBase):
 
     @classmethod
     def _execute(cls, from_, args):
-        chats = Chat.objects.filter(telegram_user_id=from_['id']).order_by('telegram_active')
+        chats = Chat.objects.filter(telegram_user_id=from_['id']).select_related('vk_user').order_by('telegram_active')
         result = []
         for chat in chats:
-            s = cls._get_vk_user_url(chat.vk_user_id)
+            text = '{} {} {}'.format(
+                cls._get_vk_user_url(chat.vk_user_id),
+                chat.vk_user.last_name,
+                chat.vk_user.first_name,
+            )
             if chat.is_active():
-                s = '{} - active'.format(s)
-            result.append(s)
+                text = '{} - active'.format(text)
 
-        return True, '\n'.join(result)
+            result.append([
+                {
+                    'text': text,
+                    'callback_data': 'Nope'
+                },
+                {
+                    'text': '\U00002709',
+                    'callback_data': 'Nope'
+                },
+                {
+                    'text': '\U0000274C',
+                    'callback_data': 'Nope'
+                },
+            ])
+
+        result = json.dumps({
+            'inline_keyboard': result
+        })
+        return cls._execution_result(True, 'Your chats:', reply_markup=result)

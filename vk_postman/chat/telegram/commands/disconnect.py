@@ -19,16 +19,16 @@ class Disconnect(CommandBase):
                 vk_active=True,
             )
         except Chat.DoesNotExist:
-            return True, 'You are not connected to any vk user'
+            return cls._execution_result(True, 'You are not connected to any vk user')
         except Chat.MultipleObjectsReturned:
             Chat.objects.filter(telegram_user=from_['id']).update(
                 telegram_active=False,
                 vk_active=False,
             )
-            return True, 'Disconnected from all chats.'
+            return cls._execution_result(True, 'Disconnected from all chats.')
 
         chat.telegram_active = False
         chat.vk_active = False
         chat.save()
 
-        return True, cls._SUCCESS_MSG.format(vk_user=cls._get_vk_user_url(chat.vk_user_id))
+        return cls._execution_result(True, cls._SUCCESS_MSG.format(vk_user=cls._get_vk_user_url(chat.vk_user_id)))

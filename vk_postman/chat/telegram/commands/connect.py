@@ -19,7 +19,7 @@ class Connect(CommandBase):
         try:
             vk_user_id = args[0]
         except IndexError:
-            return False, 'Vk user\'s id is required'
+            return cls._execution_result(False, 'Vk user\'s id is required')
 
         telegram_user, tg_user_created = TelegramUser.objects.get_or_create(
             id=from_['id'],
@@ -35,7 +35,7 @@ class Connect(CommandBase):
             telegram_active=True,
             vk_active=True,
         ).exclude(telegram_user=telegram_user).exists():
-            return False, cls._USER_IS_BUSY
+            return cls._execution_result(False, cls._USER_IS_BUSY)
 
         Chat.objects.filter(
             telegram_user=telegram_user,
@@ -51,4 +51,4 @@ class Connect(CommandBase):
             chat.vk_active = True
             chat.save()
 
-        return True, None
+        return cls._execution_result(True)

@@ -37,12 +37,24 @@ class CommandBase(metaclass=StrMC):
             vk_user = ''
         return cls._SUCCESS_MSG.format(vk_user=vk_user)
 
+    @staticmethod
+    def _execution_result(status, text=None, **kwargs):
+        result = {}
+        if text:
+            result['text'] = text
+        if kwargs:
+            result.update(kwargs)
+        return status, result
+
     @classmethod
     def _execute(cls, from_, args):
+        """
+        return (bool, dict or None)
+        """
         return True, None
 
     @staticmethod
-    def send_message(telegram_user_id, text, parse_mode='HTML', disable_web_page_preview=True):
+    def send_message(telegram_user_id, text, parse_mode='HTML', disable_web_page_preview=True, reply_markup=None):
         url = 'https://api.telegram.org/bot{}/sendMessage'.format(settings.TELEGRAM_TOKEN)
         return requests.post(
             url,
@@ -50,15 +62,18 @@ class CommandBase(metaclass=StrMC):
                 'chat_id': telegram_user_id,
                 'text': text,
                 'parse_mode': parse_mode,
-                'disable_web_page_preview': disable_web_page_preview
+                'disable_web_page_preview': disable_web_page_preview,
+                'reply_markup': reply_markup,
             },
         )
 
     @classmethod
     def execute(cls, from_, args):
-        result, msg = cls._execute(from_, args)
-        if msg is None:
-            msg = cls._create_success_message(args)
-            if not msg:
+        result, data = cls._execute(from_, args)
+        if data is None:
+            text = cls._create_success_message(args)
+            if not text:
                 return
-        cls.send_message(from_['id'], msg)
+            data = {'text': text}
+
+        cls.send_message(from_['id'], **data)
