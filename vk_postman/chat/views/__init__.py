@@ -1,1 +1,2 @@
 from chat.views.telegram_webhook import telegram_webhook
+from chat.views.test_telegram_webhook import test_telegram_webhook

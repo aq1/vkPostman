@@ -17,10 +17,12 @@ from django.conf.urls import url
 from django.conf import settings
 
 from chat.views import (
-    telegram_webhook
+    telegram_webhook,
+    test_telegram_webhook,
 )
 
 
 urlpatterns = [
-    url(r'^telegram_webhook/{}$'.format(settings.TELEGRAM_TOKEN), telegram_webhook, name='telegram_webhook'),
+    url(r'^{}$'.format(settings.TELEGRAM_WEBHOOK_PATH), telegram_webhook, name='telegram_webhook'),
+    url(r'^test_telegram_webhook/$', test_telegram_webhook, name='test_telegram_webhook'),
 ]
