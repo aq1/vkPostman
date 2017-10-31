@@ -28,7 +28,7 @@ class Chats(CommandBase):
                     'callback_data': 'Nope'
                 },
                 {
-                    'text': '\U0000274C',
+                    'text': '\U0000274C {:>15}'.format(chat.vk_user_id),
                     'callback_data': 'Nope'
                 },
             ])
