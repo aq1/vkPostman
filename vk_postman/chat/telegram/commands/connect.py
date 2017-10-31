@@ -17,9 +17,11 @@ class Connect(CommandBase):
         Then connect to a new chat.
         """
         try:
-            vk_user_id = args[0]
+            vk_user_id = int(args[0])
         except IndexError:
             return cls._execution_result(False, 'Vk user\'s id is required')
+        except ValueError:
+            return cls._execution_result(False, 'Paramter must be a number')
 
         telegram_user, tg_user_created = TelegramUser.objects.get_or_create(
             id=from_['id'],

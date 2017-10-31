@@ -27,7 +27,7 @@ def send_message_from_vk_to_telegram(data):
         send_message_to_vk_user(vk_user_id, 'Sorry! Multiple telegram users are connected to you.')
         return
 
-    text = '{} {}\n{}'.format(
+    text = '<b>{} {}</b>\n{}'.format(
         chat.vk_user.first_name,
         chat.vk_user.last_name,
         data[5]

@@ -69,8 +69,15 @@ class CommandBase(metaclass=StrMC):
 
     @classmethod
     def execute(cls, from_, args):
-        result, data = cls._execute(from_, args)
-        if data is None:
+        try:
+            result, data = cls._execute(from_, args)
+        except Exception:
+            cls.send_message(
+                from_['id'],
+                'Sorry! Something went wrong. We are going to investigate it soon.'
+            )
+            return
+        if not data:
             text = cls._create_success_message(args)
             if not text:
                 return
