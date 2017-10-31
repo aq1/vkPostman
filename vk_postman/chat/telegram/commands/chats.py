@@ -15,21 +15,16 @@ class Chats(CommandBase):
         chats = Chat.objects.filter(telegram_user_id=from_['id']).select_related('vk_user').order_by('telegram_active')
         result = []
         for chat in chats:
-            text = '{} {} {}'.format(
-                cls._get_vk_user_url(chat.vk_user_id),
+            text = '{} {}'.format(
                 chat.vk_user.last_name,
                 chat.vk_user.first_name,
             )
             if chat.is_active():
-                text = '{} - active'.format(text)
+                text = '\U00002705 {}'.format(text)
 
             result.append([
                 {
                     'text': text,
-                    'callback_data': 'Nope'
-                },
-                {
-                    'text': '\U00002709',
                     'callback_data': 'Nope'
                 },
                 {
@@ -41,4 +36,4 @@ class Chats(CommandBase):
         result = json.dumps({
             'inline_keyboard': result
         })
-        return cls._execution_result(True, 'Your chats:', reply_markup=result)
+        return cls._execution_result(True, 'Your chats click to connect:', reply_markup=result)
