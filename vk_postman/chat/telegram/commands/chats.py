@@ -13,7 +13,7 @@ class Chats(CommandBase):
     @classmethod
     def _execute(cls, from_, args):
         chats = Chat.objects.filter(telegram_user_id=from_['id']).select_related('vk_user').order_by('telegram_active')
-        result = []
+        reply_markup = []
         for chat in chats:
             text = '{} {}'.format(
                 chat.vk_user.last_name,
@@ -22,18 +22,19 @@ class Chats(CommandBase):
             if chat.is_active():
                 text = '\U00002705 {}'.format(text)
 
-            result.append([
+            reply_markup.append([
                 {
                     'text': text,
-                    'callback_data': 'Nope'
+                    'callback_data': '/connect {}'.format(chat.vk_user_id)
                 },
                 {
-                    'text': '\U0000274C {:>15}'.format(chat.vk_user_id),
-                    'callback_data': 'Nope'
+                    'text': '\U0000274C',
+                    'callback_data': '/remove_chat {}'.format(chat.vk_user_id)
                 },
             ])
 
-        result = json.dumps({
-            'inline_keyboard': result
-        })
-        return cls._execution_result(True, 'Your chats click to connect:', reply_markup=result)
+        return cls._execution_result(
+            True,
+            'Your chats. Click name to connect. Click X to remove chat from history.',
+            reply_markup=json.dumps({'inline_keyboard': reply_markup})
+        )
