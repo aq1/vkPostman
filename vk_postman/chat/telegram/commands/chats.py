@@ -13,6 +13,8 @@ class Chats(CommandBase):
     @classmethod
     def _execute(cls, from_, args):
         chats = Chat.objects.filter(telegram_user_id=from_['id']).select_related('vk_user').order_by('telegram_active')
+        if not chats:
+            return cls._execution_result(True, 'No chats history. Connect to a user and his name will be shown here.')
         reply_markup = []
         for chat in chats:
             text = '{} {}'.format(
