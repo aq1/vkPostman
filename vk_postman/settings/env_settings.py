@@ -13,7 +13,7 @@ DATABASES = {
     'default': dj_database_url.config(),
 }
 
-TEST_HOST = os.environ.get('TEST_HOST', 'https://localhost')
+TEST_HOST = os.environ.get('TEST_HOST', 'http://localhost:8888')
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
 TELEGRAM_WEBHOOK_PATH = 'telegram_webhook/{}'.format(TELEGRAM_TOKEN)
 
