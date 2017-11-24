@@ -17,7 +17,6 @@ def send_message_from_vk_to_telegram(data):
     try:
         chat = Chat.objects.select_related('vk_user').get(
             vk_user_id=vk_user_id,
-            telegram_active=True,
             vk_active=True,
         )
     except Chat.DoesNotExist:
@@ -30,7 +29,7 @@ def send_message_from_vk_to_telegram(data):
     text = '<b>{} {}</b>\n{}'.format(
         chat.vk_user.first_name,
         chat.vk_user.last_name,
-        data[5]
+        data[5],
     )
     CommandBase.send_message(chat.telegram_user_id, text=text)
     vk_api.call(
@@ -53,7 +52,7 @@ def send_message_to_vk_user(vk_user_id, message):
     )
 
 
-def send_message_from_telegram_to_vk(telegram_user_id, message):
+def send_message_from_telegram_to_vk(telegram_user_id, message, photo=None):
     try:
         chat = Chat.objects.select_related('telegram_user').get(
             telegram_user_id=telegram_user_id,

@@ -19,14 +19,18 @@ def telegram_webhook(request):
 
     if data.get('message'):
         from_ = data['message']['from']
-        text = data['message'].get('text', '')
+        photo = data['message'].get('photo')
+        if photo:
+            text = data['message'].get('caption', '')
+        else:
+            text = data['message'].get('text', '')
         for entity in data['message'].get('entities', []):
             if entity.get('type') == 'bot_command':
                 offset, length = entity.get('offset', 0), entity.get('length', 0)
                 command, args = text[offset:offset + length], text.split()[1:]
                 execute_command(from_, command, args)
                 return HttpResponse()
-        send_message_from_telegram_to_vk(from_['id'], text)
+        send_message_from_telegram_to_vk(from_['id'], text, photo)
 
     elif data.get('callback_query'):
         from_ = data['callback_query']['message']['chat']
