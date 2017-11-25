@@ -1,8 +1,6 @@
 import re
 
-from django.conf import settings
-
-import requests
+from chat.telegram import telegram_api
 
 
 class StrMC(type):
@@ -55,9 +53,8 @@ class CommandBase(metaclass=StrMC):
 
     @staticmethod
     def send_message(telegram_user_id, text, parse_mode='HTML', disable_web_page_preview=True, reply_markup=None):
-        url = 'https://api.telegram.org/bot{}/sendMessage'.format(settings.TELEGRAM_TOKEN)
-        return requests.post(
-            url,
+        return telegram_api.call(
+            'sendMessage',
             data={
                 'chat_id': telegram_user_id,
                 'text': text,

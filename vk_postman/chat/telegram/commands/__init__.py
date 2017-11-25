@@ -7,4 +7,9 @@ from chat.telegram.commands.chats import Chats
 from chat.telegram.commands.message_to_admin import MessageToAdmin
 from chat.telegram.commands.remove_chat import RemoveChat
 
-from chat.telegram.commands.execute_command import execute_command, AVAILABLE_COMMANDS
+from chat.telegram.commands.execute_command import (
+    execute_command,
+    parse_and_execute_telegram_command,
+    execute_command_from_callback_query,
+    AVAILABLE_COMMANDS,
+)

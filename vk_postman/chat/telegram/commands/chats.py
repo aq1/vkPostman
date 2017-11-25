@@ -18,8 +18,8 @@ class Chats(CommandBase):
         reply_markup = []
         for chat in chats:
             text = '{} {}'.format(
-                chat.vk_user.last_name,
                 chat.vk_user.first_name,
+                chat.vk_user.last_name,
             )
             if chat.is_active():
                 text = '\U00002705 {}'.format(text)
