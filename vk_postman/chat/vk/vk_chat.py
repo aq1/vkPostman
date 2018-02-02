@@ -38,6 +38,8 @@ def send_message_from_vk_to_telegram(data):
         data={
             'chat_id': chat.telegram_user_id,
             'text': text,
+            'parse_mode': 'HTML',
+            'disable_web_page_preview': True,
         }
     )
     vk_api.call(
