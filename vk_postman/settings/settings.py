@@ -115,6 +115,8 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 
+VK_API_VERSION = 5.74
+
 try:
     from settings.env_settings import *
 except ImportError:

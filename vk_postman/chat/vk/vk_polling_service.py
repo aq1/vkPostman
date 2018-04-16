@@ -31,10 +31,12 @@ def has_flag(value, flag):
 
 
 def _get_polling_server():
-    return requests.get(
-        'https://api.vk.com/method/messages.getLongPollServer?access_token={}'.format(
-            settings.VK_TOKEN
-        )
+    return requests.post(
+        'https://api.vk.com/method/messages.getLongPollServer',
+        data={
+            'access_token': settings.VK_TOKEN,
+            'v': settings.VK_API_VERSION,
+        }
     ).json()['response']
 
 
