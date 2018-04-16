@@ -104,3 +104,4 @@ ENV/
 .idea/
 n.py
 db.sqlite3
+vk_postman/static/

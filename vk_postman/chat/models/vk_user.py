@@ -9,7 +9,7 @@ class VkUser(models.Model):
     last_name = models.CharField(max_length=255, default='', blank=True)
 
     def __str__(self):
-        return '{} {}'.format(self.last_name, self.first_name)
+        return '{} {} {}'.format(self.last_name, self.first_name, self.id)
 
 
 @receiver(pre_save, sender=VkUser)

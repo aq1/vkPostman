@@ -9,6 +9,9 @@ class Chat(models.Model):
     telegram_active = models.BooleanField(default=True, blank=True)
     vk_active = models.BooleanField(default=True, blank=True)
 
+    def __str__(self):
+        return 'Chat {}'.format(self.id)
+
     def is_active(self):
         return self.telegram_active and self.vk_active
 
