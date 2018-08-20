@@ -106,3 +106,4 @@ n.py
 db.sqlite3
 vk_postman/static/
 settings/settings_local.py
+settings_local.py
