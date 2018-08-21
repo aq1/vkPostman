@@ -1,34 +1,17 @@
-from chat.models import TelegramUser, VkUser, Chat
+from bot.commands import BaseCommand
 
-from chat.telegram.commands import CommandBase
+import mongo
 
 
-class Disconnect(CommandBase):
+class DisconnectCommand(BaseCommand):
 
-    _description = 'Close currently active chat.'
-    _SUCCESS_MSG = 'You have exited chat with {vk_user}'
+    _COMMAND = 'disconnect'
+    _DESCRIPTION = 'Close currently active chat.'
+    _SUCCESS_MESSAGE = 'Disconnected from all chats'
 
-    @classmethod
-    def _execute(cls, from_, args):
-        telegram_user, _ = TelegramUser.objects.get_or_create(id=from_['id'])
-
-        try:
-            chat = Chat.objects.get(
-                telegram_user=telegram_user,
-                telegram_active=True,
-                vk_active=True,
-            )
-        except Chat.DoesNotExist:
-            return cls._execution_result(True, 'You are not connected to any vk user')
-        except Chat.MultipleObjectsReturned:
-            Chat.objects.filter(telegram_user=from_['id']).update(
-                telegram_active=False,
-                vk_active=False,
-            )
-            return cls._execution_result(True, 'Disconnected from all chats.')
-
-        chat.telegram_active = False
-        chat.vk_active = False
-        chat.save()
-
-        return cls._execution_result(True, cls._SUCCESS_MSG.format(vk_user=cls._get_vk_user_url(chat.vk_user_id)))
+    def _call(self, bot, update, **kwargs):
+        chat = mongo.get_active_chat_by_telegram_id(update.message.chat.id)
+        if chat:
+            mongo.disable_chat(chat['_id'])
+            return True
+        update.message.reply_text('You are not connected to any vk user')

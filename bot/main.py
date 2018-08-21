@@ -9,6 +9,7 @@ commands = [
     bot.commands.StartCommand(),
     bot.commands.HelpCommand(),
     bot.commands.ConnectCommand(pass_args=True),
+    bot.commands.DisconnectCommand(),
     bot.commands.MessageToAdminCommand(pass_args=True),
 ]
 

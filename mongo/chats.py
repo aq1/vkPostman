@@ -25,3 +25,18 @@ def get_active_chat_by_vk_id(vk_id):
         'vk_active': True,
         'telegram_active': True,
     })
+
+
+def get_active_chat_by_telegram_id(telegram_id):
+    return db.chats.find_one({
+        'telegram_id': telegram_id,
+        'vk_active': True,
+        'telegram_active': True,
+    })
+
+
+def disable_chat(chat_id):
+    db.chats.update(
+        {'_id': chat_id},
+        {'$set': {'vk_active': False, 'telegram_active': False}},
+    )
