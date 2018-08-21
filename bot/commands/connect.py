@@ -40,6 +40,7 @@ class ConnectCommand(BaseCommand):
             return
         elif active_chat:
             update.message.reply_text(self._already_connected)
+            return
         else:
             mongo.create_chat(vk_id, update.message.chat.id)
 

@@ -29,9 +29,9 @@ def get_vk_user(vk_id):
 
 def save_vk_user(user):
     user = {
-        'id': user.id,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
+        'id': user['id'],
+        'first_name': user['first_name'],
+        'last_name': user['last_name'],
     }
     db.vk_users.update(user, user, upsert=True)
     return user
