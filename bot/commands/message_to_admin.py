@@ -1,30 +1,28 @@
-from django.conf import settings
+import settings
 
-from chat.vk import vk_chat
-from chat.telegram.commands import CommandBase
+from bot.commands import BaseCommand
 
 
-class MessageToAdmin(CommandBase):
+class MessageToAdminCommand(BaseCommand):
 
-    _description = 'Write to admin.'
-    _SUCCESS_MSG = 'Message sent'
+    _COMMAND = 'message_to_admin'
+    _DESCRIPTION = 'Write to admin.'
+    _SUCCESS_MESSAGE = 'Message sent'
 
     @staticmethod
     def _format_message(from_, message):
-        return 'Message from user "{} {} ({})" to admin.\n{}'.format(
+        return 'Message from user "{} {} ({})" to admin.\n\n{}'.format(
             from_['first_name'],
             from_['last_name'],
             from_['id'],
             message,
         )
 
-    @classmethod
-    def _execute(cls, from_, args):
-        try:
-            message = ' '.join(args)
-        except IndexError:
-            return cls._execution_result('Message is required.')
+    def _call(self, bot, update, **kwargs):
+        if not kwargs['args']:
+            update.message.reply_text('Message is required.')
+            return
 
-        message = cls._format_message(from_, message)
-        vk_chat.send_message_to_vk_user(settings.ADMIN_ID, message)
-        return cls._execution_result(True)
+        message = self._format_message(update.message.chat, ' '.join(kwargs['args']))
+        bot.sendMessage(settings.ADMIN_ID, message)
+        return True

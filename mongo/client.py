@@ -1,3 +1,4 @@
+import pymongo
 from pymongo import MongoClient
 
 import settings
@@ -15,3 +16,8 @@ client = MongoClient(
 db = client[settings.MONGO_DB]
 db.telegram_users.create_index('id', unique=True)
 db.vk_users.create_index('id', unique=True)
+db.chats.create_index((
+    ('telegram_id', pymongo.DESCENDING),
+    ('vk_id', pymongo.DESCENDING)),
+    unique=True,
+)

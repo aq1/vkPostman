@@ -4,14 +4,14 @@ from mongo.client import db
 
 
 def get_telegram_user(chat_id):
-    return db.telgeram_users.find_one({
+    return db.telegram_users.find_one({
         'id': chat_id,
     })
 
 
 def save_telegram_user(user):
     try:
-        db.telgeram_users.save({
+        db.telegram_users.save({
             'id': user.id,
             'username': user.username,
             'first_name': user.first_name,

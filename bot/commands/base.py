@@ -27,6 +27,9 @@ class BaseCommand(telegram.ext.CommandHandler):
         command = command or self._COMMAND
         callback = callback or self.__call__
 
+        if not command:
+            raise ValueError('Expected `command` argument')
+
         super().__init__(command,
                          callback,
                          filters,
