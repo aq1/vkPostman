@@ -1,3 +1,4 @@
+import vk
 import mongo
 from bot.commands import BaseCommand
 
@@ -6,8 +7,12 @@ class ConnectCommand(BaseCommand):
 
     _COMMAND = 'connect'
     _DESCRIPTION = 'Start a chat with user.'
-    _SUCCESS_MESSAGE = 'You are now chatting with {vk_user}'
-    _USER_IS_BUSY = 'Sorry! User you are trying to connect is already connected to another telegram user. Try later.'
+    _connected = 'You are now chatting with {vk_user[first_name]} {vk_user[last_name]}'
+    _user_is_busy = (
+        'Sorry! User you are trying to connect '
+        'is already connected to another telegram user. Try later.'
+    )
+    _already_connected = 'You are already connected to this user.'
 
     def _call(self, bot, update, **kwargs):
         """
@@ -16,38 +21,26 @@ class ConnectCommand(BaseCommand):
         Then connect to a new chat.
         """
         try:
-            vk_id = int(kwargs['args'])
-        except KeyError:
+            vk_id = int(kwargs['args'][0])
+        except (KeyError, IndexError):
             update.message.reply_text('Vk user\'s id is required')
             return
         except ValueError:
-            update.message.reply_text('Paramter must be a number')
+            update.message.reply_text('Parameter must be a number')
             return
 
-        telegram_user = mongo.get_telegram_user(update.message.chat.id)
         vk_user = mongo.get_vk_user(vk_id)
+        if not vk_user:
+            user = vk.get_user(vk_id)
+            vk_user = mongo.save_vk_user(user)
 
-        chat = mongo.get_chat(update.message.chat.id, vk_id)
+        active_chat = mongo.get_active_chat_by_vk_id(vk_id)
+        if active_chat and active_chat['telegram_id'] != update.message.chat.id:
+            update.message.reply_text(self._user_is_busy)
+            return
+        elif active_chat:
+            update.message.reply_text(self._already_connected)
+        else:
+            mongo.create_chat(vk_id, update.message.chat.id)
 
-        if Chat.objects.filter(
-            vk_user=vk_user,
-            telegram_active=True,
-            vk_active=True,
-        ).exclude(telegram_user=telegram_user).exists():
-            return cls._execution_result(False, cls._USER_IS_BUSY)
-
-        Chat.objects.filter(
-            telegram_user=telegram_user,
-        ).update(telegram_active=False, vk_active=False)
-
-        chat, created = Chat.objects.get_or_create(
-            telegram_user=telegram_user,
-            vk_user=vk_user,
-        )
-
-        if not created and not (chat.telegram_active and chat.vk_active):
-            chat.telegram_active = True
-            chat.vk_active = True
-            chat.save()
-
-        return cls._execution_result(True)
+        update.message.reply_text(self._connected.format(vk_user=vk_user))

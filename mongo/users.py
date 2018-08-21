@@ -28,11 +28,10 @@ def get_vk_user(vk_id):
 
 
 def save_vk_user(user):
-    try:
-        db.vk_users.save({
-            'id': user.id,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-        })
-    except DuplicateKeyError:
-        pass
+    user = {
+        'id': user.id,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+    }
+    db.vk_users.update(user, user, upsert=True)
+    return user
