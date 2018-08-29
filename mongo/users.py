@@ -27,6 +27,12 @@ def get_vk_user(vk_id):
     })
 
 
+def get_vk_users_by_id(vk_ids):
+    return db.vk_users.find({
+        'id': {'$in': vk_ids}
+    })
+
+
 def save_vk_user(user):
     user = {
         'id': user['id'],

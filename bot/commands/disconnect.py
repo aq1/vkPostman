@@ -10,8 +10,8 @@ class DisconnectCommand(BaseCommand):
     _SUCCESS_MESSAGE = 'Disconnected from all chats'
 
     def _call(self, bot, update, **kwargs):
-        chat = mongo.get_active_chat_by_telegram_id(update.message.chat.id)
+        chat = mongo.chats.get_active_chat_by_telegram_id(update.message.chat.id)
         if chat:
-            mongo.disable_chat(chat['_id'])
+            mongo.chats.disable_chat(chat['_id'])
             return True
         update.message.reply_text('You are not connected to any vk user')

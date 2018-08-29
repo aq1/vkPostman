@@ -40,3 +40,9 @@ def disable_chat(chat_id):
         {'_id': chat_id},
         {'$set': {'vk_active': False, 'telegram_active': False}},
     )
+
+
+def get_chats_history(telegram_id):
+    return db.chats.find(
+        {'telegram_id': telegram_id},
+    )

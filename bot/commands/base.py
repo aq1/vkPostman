@@ -48,7 +48,7 @@ class BaseCommand(telegram.ext.CommandHandler):
 
     @telegram.ext.dispatcher.run_async
     def __call__(self, bot, update, **kwargs):
-        mongo.save_telegram_user(update.message.chat)
+        mongo.users.save_telegram_user(update.message.chat)
 
         ok = self._call(bot, update, **kwargs)
 
