@@ -1,4 +1,4 @@
-from bot.commands import BaseCommand
+from bot.commands import BaseCommand, MessageToAdminCommand
 
 
 class HelpCommand(BaseCommand):
@@ -9,5 +9,6 @@ class HelpCommand(BaseCommand):
         'Okay, let\'s start.\n'
         'Before sending a message to a vk user, you must connect to him (create a chat).\n'
         'Type /connect "vk_user_id" to connect!\n'
-        'You can write to admins with /write_to_admin &lt;Your message here&gt; command.'
-    )
+        'You can write to admins with\n'
+        '{} {{Your message here}} command.'
+    ).format(MessageToAdminCommand.get_command())
