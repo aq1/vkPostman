@@ -50,15 +50,27 @@ class BaseCommand(telegram.ext.CommandHandler):
         """
         return True
 
+    def _callback(self, user, _bot, update, **kwargs):
+        return True
+
     @telegram.ext.dispatcher.run_async
     def __call__(self, _bot, update, **kwargs):
         user = update.message.chat if update.message else update.callback_query.from_user
         mongo.users.save_telegram_user(user)
 
-        ok = self._call(user, _bot, update, **kwargs)
+        if update.message:
+            ok = self._call(user, _bot, update, **kwargs)
+        else:
+            ok = self._callback(user, _bot, update, **kwargs)
 
         if ok and self._SUCCESS_MESSAGE:
-            update.message.reply_text(self._SUCCESS_MESSAGE)
+            if update.message:
+                update.message.reply_text(self._SUCCESS_MESSAGE)
+            else:
+                _bot.send_message(
+                    chat_id=user.id,
+                    text=self._SUCCESS_MESSAGE,
+                )
 
         return self._RETURN_STATE
 
