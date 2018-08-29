@@ -14,7 +14,7 @@ class ConnectCommand(BaseCommand):
     )
     _already_connected = 'You are already connected to this user.'
 
-    def _call(self, bot, update, **kwargs):
+    def _call(self, user, _bot, update, **kwargs):
         """
         First, check if vk user is free to chat and is not connected to another telegram user.
         Then disconnect from previous chats.
@@ -35,13 +35,13 @@ class ConnectCommand(BaseCommand):
             vk_user = mongo.users.save_vk_user(user)
 
         active_chat = mongo.chats.get_active_chat_by_vk_id(vk_id)
-        if active_chat and active_chat['telegram_id'] != update.message.chat.id:
+        if active_chat and active_chat['telegram_id'] != user.id:
             update.message.reply_text(self._user_is_busy)
             return
         elif active_chat:
             update.message.reply_text(self._already_connected)
             return
         else:
-            mongo.chats.create_chat(vk_id, update.message.chat.id)
+            mongo.chats.create_chat(vk_id, user.id)
 
         update.message.reply_text(self._connected.format(vk_user=vk_user))

@@ -4,3 +4,5 @@ from bot.commands.help import HelpCommand
 from bot.commands.message_to_admin import MessageToAdminCommand
 from bot.commands.connect import ConnectCommand
 from bot.commands.disconnect import DisconnectCommand
+from bot.commands.chats import Chats
+

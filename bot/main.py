@@ -11,14 +11,28 @@ commands = [
     bot.commands.ConnectCommand(pass_args=True),
     bot.commands.DisconnectCommand(),
     bot.commands.MessageToAdminCommand(pass_args=True),
+    bot.commands.Chats(),
 ]
 
+callback_queries = [
+    telegram.ext.CallbackQueryHandler(
+        bot.commands.ConnectCommand(),
+        pattern='{} \d+'.format(bot.commands.ConnectCommand.get_command()),
+    ),
+    telegram.ext.CallbackQueryHandler(
+        bot.commands.DisconnectCommand(),
+        pattern='{} \d+'.format(bot.commands.DisconnectCommand.get_command()),
+    ),
+]
+
+states = commands + callback_queries
+
 bot_handler = telegram.ext.ConversationHandler(
-    entry_points=commands,
+    entry_points=states,
     states={
-        bot.states.START: commands,
+        bot.states.START: states,
     },
-    fallbacks=[telegram.ext.RegexHandler('\w+', lambda *args: bot.states.START)]
+    fallbacks=[telegram.ext.RegexHandler('.+', lambda *args: bot.states.START)],
 )
 
 

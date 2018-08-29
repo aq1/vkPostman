@@ -9,8 +9,8 @@ class DisconnectCommand(BaseCommand):
     _DESCRIPTION = 'Close currently active chat.'
     _SUCCESS_MESSAGE = 'Disconnected from all chats'
 
-    def _call(self, bot, update, **kwargs):
-        chat = mongo.chats.get_active_chat_by_telegram_id(update.message.chat.id)
+    def _call(self, user, _bot, update, **kwargs):
+        chat = mongo.chats.get_active_chat_by_telegram_id(user.id)
         if chat:
             mongo.chats.disable_chat(chat['_id'])
             return True

@@ -10,19 +10,19 @@ class MessageToAdminCommand(BaseCommand):
     _SUCCESS_MESSAGE = 'Message sent'
 
     @staticmethod
-    def _format_message(from_, message):
+    def _format_message(user, message):
         return 'Message from user "{} {} ({})" to admin.\n\n{}'.format(
-            from_['first_name'],
-            from_['last_name'],
-            from_['id'],
+            user['first_name'],
+            user['last_name'],
+            user['id'],
             message,
         )
 
-    def _call(self, bot, update, **kwargs):
+    def _call(self, user, _bot, update, **kwargs):
         if not kwargs['args']:
             update.message.reply_text('Message is required.')
             return
 
-        message = self._format_message(update.message.chat, ' '.join(kwargs['args']))
-        bot.sendMessage(settings.ADMIN_ID, message)
+        message = self._format_message(user, ' '.join(kwargs['args']))
+        _bot.sendMessage(settings.ADMIN_ID, message)
         return True
