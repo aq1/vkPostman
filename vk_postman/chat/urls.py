@@ -22,6 +22,6 @@ from chat.views import (
 
 
 urlpatterns = [
-    url(r'^telegram_webhook/$', telegram_webhook, name='telegram_webhook'),
-    url(r'^test_telegram_webhook/$', test_telegram_webhook, name='test_telegram_webhook'),
+    url(r'^telegram_webhook$', telegram_webhook, name='telegram_webhook'),
+    url(r'^test_telegram_webhook$', test_telegram_webhook, name='test_telegram_webhook'),
 ]
