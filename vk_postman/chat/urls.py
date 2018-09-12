@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.conf import settings
 
 from chat.views import (
     telegram_webhook,
@@ -23,6 +22,6 @@ from chat.views import (
 
 
 urlpatterns = [
-    url(r'^{}$'.format(settings.TELEGRAM_WEBHOOK_PATH), telegram_webhook, name='telegram_webhook'),
+    url(r'^telegram_webhook/$', telegram_webhook, name='telegram_webhook'),
     url(r'^test_telegram_webhook/$', test_telegram_webhook, name='test_telegram_webhook'),
 ]

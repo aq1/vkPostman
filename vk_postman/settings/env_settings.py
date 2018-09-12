@@ -15,7 +15,6 @@ DATABASES = {
 
 TEST_HOST = os.environ.get('TEST_HOST', 'http://localhost:8888')
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
-TELEGRAM_WEBHOOK_PATH = 'telegram_webhook/{}'.format(TELEGRAM_TOKEN)
 
 VK_TOKEN = os.environ.get('VK_TOKEN', '')
 
