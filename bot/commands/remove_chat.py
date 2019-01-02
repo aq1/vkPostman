@@ -1,32 +1,30 @@
-from chat.models import TelegramUser, VkUser, Chat
+import mongo
+from bot.commands import BaseCommand
 
-from chat.telegram.commands import CommandBase
 
+class RemoveChat(BaseCommand):
 
-class RemoveChat(CommandBase):
+    _COMMAND = 'remove_chat'
+    _SUCCESS_MESSAGE = 'Chat has been removed'
+    _DESCRIPTION = 'Remove chat from history.'
 
-    _description = 'Remove chat from history.'
-    _SUCCESS_MSG = 'Chat with {vk_user} has been removed'
-
-    @classmethod
-    def _execute(cls, from_, args):
-        telegram_user, _ = TelegramUser.objects.get_or_create(id=from_['id'])
-
+    def _call(self, user, _bot, update, **kwargs):
+        """
+        Return bool indicating successful execution
+        """
         try:
-            vk_user_id = int(args[0])
-        except IndexError:
-            return cls._execution_result(False, 'Vk user\'s id is required')
+            vk_id = int(kwargs['args'][0])
+        except (KeyError, IndexError):
+            update.message.reply_text('Vk user\'s id is required')
+            return
         except ValueError:
-            return cls._execution_result(False, 'Paramter must be a number')
+            update.message.reply_text('Parameter must be a number')
+            return
 
-        try:
-            chat = Chat.objects.get(
-                telegram_user=telegram_user,
-                vk_user_id=vk_user_id,
-            )
-        except Chat.DoesNotExist:
-            return cls._execution_result(True, 'You are not connected to any vk user')
+        chat = mongo.chats.get_chat(vk_id, user['id'])
+        if not chat:
+            update.message.reply_text('No chat found')
+            return
 
-        chat.delete()
-
-        return cls._execution_result(True, cls._SUCCESS_MSG.format(vk_user=cls._get_vk_user_url(chat.vk_user_id)))
+        mongo.chats.delete_chat(chat['_id'])
+        return True

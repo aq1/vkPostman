@@ -22,15 +22,15 @@ class ConnectCommand(BaseCommand):
             vk_user = mongo.users.save_vk_user(user)
 
         active_chat = mongo.chats.get_active_chat_by_vk_id(vk_id)
-        if active_chat and active_chat['telegram_id'] != user.id:
-            _bot.send_message(user.id, self._user_is_busy)
+        if active_chat and active_chat['telegram_id'] != user['id']:
+            _bot.send_message(user['id'], self._user_is_busy)
             return
         elif active_chat:
-            _bot.send_message(user.id, self._already_connected)
+            _bot.send_message(user['id'], self._already_connected)
             return
         else:
-            mongo.chats.create_chat(vk_id, user.id)
-        _bot.send_message(user.id, self._connected.format(vk_user=vk_user))
+            mongo.chats.create_chat(vk_id, user['id'])
+        _bot.send_message(user['id'], self._connected.format(vk_user=vk_user))
         return True
 
     def _callback(self, user, _bot, update, **kwargs):

@@ -5,4 +5,4 @@ from bot.commands.help import HelpCommand
 from bot.commands.connect import ConnectCommand
 from bot.commands.disconnect import DisconnectCommand
 from bot.commands.chats import Chats
-
+from bot.commands.remove_chat import RemoveChat

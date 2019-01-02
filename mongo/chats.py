@@ -46,3 +46,7 @@ def get_chats_history(telegram_id):
     return db.chats.find(
         {'telegram_id': telegram_id},
     )
+
+
+def delete_chat(chat_id):
+    return db.chats.remove({'_id': chat_id})

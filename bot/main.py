@@ -12,6 +12,7 @@ commands = [
     bot.commands.DisconnectCommand(),
     bot.commands.MessageToAdminCommand(pass_args=True),
     bot.commands.Chats(),
+    bot.commands.RemoveChat(pass_args=True),
 ]
 
 callback_queries = [
