@@ -32,11 +32,11 @@ class Chats(BaseCommand):
                 text = '✅ {}'.format(text)
 
             connect_callback = '{} {}'.format(ConnectCommand.get_command(), chat['vk_id'])
-            disconnect_callback = '{}'.format(DisconnectCommand.get_command())
+            # disconnect_callback = '{}'.format(DisconnectCommand.get_command())
 
             reply_markup.append([
                 InlineKeyboardButton(text, callback_data=connect_callback),
-                InlineKeyboardButton('🗑', callback_data=disconnect_callback),
+                # InlineKeyboardButton('🗑', callback_data=disconnect_callback),
             ])
 
         update.message.reply_text(
@@ -44,7 +44,7 @@ class Chats(BaseCommand):
                 'Your chats.\n'
                 'Click name to connect or disconnect.\n'
                 '✅ means you are connected\n'
-                '🗑 to remove chat from history.'
+                # '🗑 to remove chat from history. (WIP)'
             ),
             reply_markup=InlineKeyboardMarkup(reply_markup),
             disable_web_page_preview=True,

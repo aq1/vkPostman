@@ -21,3 +21,15 @@ def get_user(user_id):
         return r.json()['response'][0]
     except (ValueError, IndexError):
         return
+
+
+def send_message(vk_id, message):
+    return call(
+        'post',
+        'messages.send',
+        data={
+            'user_id': vk_id,
+            'message': message,
+            # 'attachment': attachment,
+        }
+    )

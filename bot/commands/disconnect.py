@@ -7,7 +7,7 @@ class DisconnectCommand(BaseCommand):
 
     _COMMAND = 'disconnect'
     _DESCRIPTION = 'Close currently active chat.'
-    _SUCCESS_MESSAGE = 'Disconnected from all chats'
+    _SUCCESS_MESSAGE = 'Disconnected from chat'
 
     def _callback(self, user, _bot, update, **kwargs):
         return self._call(user, _bot, update, **kwargs)
@@ -21,3 +21,4 @@ class DisconnectCommand(BaseCommand):
             user.id,
             'You are not connected to any vk user',
         )
+        return False

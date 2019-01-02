@@ -42,6 +42,14 @@ def disable_chat(chat_id):
     )
 
 
+def disable_chats_for_telegram_user(telegram_id):
+    db.chats.update(
+        {'telegram_id': telegram_id},
+        {'$set': {'vk_active': False, 'telegram_active': False}},
+        multi=True,
+    )
+
+
 def get_chats_history(telegram_id):
     return db.chats.find(
         {'telegram_id': telegram_id},

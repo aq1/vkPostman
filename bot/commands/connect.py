@@ -29,6 +29,7 @@ class ConnectCommand(BaseCommand):
             _bot.send_message(user['id'], self._already_connected)
             return
         else:
+            mongo.chats.disable_chats_for_telegram_user(user['id'])
             mongo.chats.create_chat(vk_id, user['id'])
         _bot.send_message(user['id'], self._connected.format(vk_user=vk_user))
         return True

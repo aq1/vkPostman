@@ -26,7 +26,11 @@ callback_queries = [
     ),
 ]
 
-states = commands + callback_queries
+messages_transport = [
+    bot.message_transport.TransportMessageToVK()
+]
+
+states = commands + callback_queries + messages_transport
 
 bot_handler = telegram.ext.ConversationHandler(
     entry_points=states,
