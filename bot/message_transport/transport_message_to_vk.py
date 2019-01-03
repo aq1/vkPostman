@@ -37,7 +37,7 @@ class TransportMessageToVK(telegram.ext.RegexHandler):
             )
             return
 
-        result = vk.send_message(
+        result = vk.api.send_message(
             chat['vk_id'],
             self._format_message(user, update.message.text),
         )

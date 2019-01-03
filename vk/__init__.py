@@ -1,1 +1,4 @@
-from vk.api import *
+from vk import (
+    api,
+    service,
+)
