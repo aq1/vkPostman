@@ -105,5 +105,6 @@ ENV/
 n.py
 db.sqlite3
 vk_postman/static/
-logs/
+settings/settings_local.py
 settings_local.py
+logs/

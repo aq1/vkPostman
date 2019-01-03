@@ -1,0 +1,1 @@
+from bot.message_transport.transport_message_to_vk import TransportMessageToVK
