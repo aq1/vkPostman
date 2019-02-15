@@ -1,10 +1,21 @@
+import argparse
+
 import bot
 import vk
 
-import multiprocessing
+
+COMMANDS = {
+    'start_bot': bot.start_bot,
+    'start_vk_polling': vk.service.start,
+}
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('command', choices=COMMANDS.keys())
+
+    COMMANDS[parser.parse_args().command]()
 
 
 if __name__ == '__main__':
-    for f in bot.start_bot, vk.service.start:
-        p = multiprocessing.Process(target=f)
-        p.start()
+    main()
