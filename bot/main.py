@@ -46,10 +46,9 @@ def start_bot():
     updater = telegram.ext.Updater(bot=_bot)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(bot_handler)
+
     logger.info('Printing available commands')
     logger.info('\n'.join(map(str, commands)))
     logger.info('Started Bot')
-    try:
-        updater.start_polling(clean=True)
-    except KeyboardInterrupt:
-        logger.info('Stopped Bot')
+
+    updater.start_polling(clean=True)
