@@ -7,6 +7,7 @@ import settings
 import vk
 
 
+_VK_POLLING_FAILED_MESSAGE = 'Sorry. Something went wrong. We are investigating.'
 MESSAGE_FLAGS = [
     65536,  # HIDDEN
     512,    # MEDIA
@@ -90,7 +91,12 @@ def start():
         ts = r['ts']
         for u in r['updates']:
             if u[0] == 4 and not has_flag(u[2], 2):
-                send_message_from_vk_to_telegram(u)
+                try:
+                    send_message_from_vk_to_telegram(u)
+                except:
+                    logger.exception('vk_polling')
+                    vk.api.send_message(u[3], _VK_POLLING_FAILED_MESSAGE)
+                    continue
 
 
 if __name__ == '__main__':

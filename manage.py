@@ -1,6 +1,5 @@
 import argparse
 
-from utils.logging import logger
 import bot
 import vk
 
@@ -15,10 +14,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('command', choices=COMMANDS.keys())
 
-    try:
-        COMMANDS[parser.parse_args().command]()
-    except:
-        logger.exception('')
+    COMMANDS[parser.parse_args().command]()
 
 
 if __name__ == '__main__':
