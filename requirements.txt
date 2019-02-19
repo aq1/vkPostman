@@ -1,3 +1,4 @@
 python_telegram_bot
 requests
 pymongo
+sentry-sdk

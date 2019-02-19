@@ -16,3 +16,5 @@ VK_TOKEN = ''
 VK_API_VERSION = 5.74
 
 ADMIN_ID = ''
+
+SENTRY_URL = ''

@@ -1,5 +1,8 @@
 import argparse
 
+import sentry_sdk
+
+import settings
 import bot
 import vk
 
@@ -8,6 +11,8 @@ COMMANDS = {
     'start_bot': bot.start_bot,
     'start_vk_polling': vk.service.start,
 }
+
+sentry_sdk.init(settings.SENTRY_URL)
 
 
 def main():
