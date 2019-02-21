@@ -12,7 +12,8 @@ COMMANDS = {
     'start_vk_polling': vk.service.start,
 }
 
-sentry_sdk.init(settings.SENTRY_URL)
+if not settings.DEBUG:
+    sentry_sdk.init(settings.SENTRY_URL)
 
 
 def main():

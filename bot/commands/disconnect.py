@@ -17,6 +17,7 @@ class DisconnectCommand(BaseCommand):
         if chat:
             mongo.chats.disable_chat(chat['_id'])
             return True
+
         _bot.send_message(
             user.id,
             'You are not connected to any vk user',

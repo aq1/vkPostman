@@ -4,11 +4,14 @@ from mongo.client import db
 def create_chat(vk_id, telegram_id):
     db.chats.update({
         'vk_id': vk_id,
-        'telegram_id': telegram_id
-    }, {'$set': {
-        'vk_active': True,
-        'telegram_active': True,
-    }}, upsert=True,
+        'telegram_id': telegram_id,
+    }, {
+        '$set': {
+            'vk_active': True,
+            'telegram_active': True,
+        },
+    },
+        upsert=True,
     )
 
 
@@ -38,14 +41,20 @@ def get_active_chat_by_telegram_id(telegram_id):
 def disable_chat(chat_id):
     db.chats.update(
         {'_id': chat_id},
-        {'$set': {'vk_active': False, 'telegram_active': False}},
+        {'$set': {
+            'vk_active': False,
+            'telegram_active': False,
+        }},
     )
 
 
 def disable_chats_for_telegram_user(telegram_id):
     db.chats.update(
         {'telegram_id': telegram_id},
-        {'$set': {'vk_active': False, 'telegram_active': False}},
+        {'$set': {
+            'vk_active': False,
+            'telegram_active': False,
+        }},
         multi=True,
     )
 
