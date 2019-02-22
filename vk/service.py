@@ -73,21 +73,33 @@ def has_flag(value, flag):
 
 
 def _get_polling_server():
-    return requests.post(
-        'https://api.vk.com/method/messages.getLongPollServer',
-        data={
-            'access_token': settings.VK_TOKEN,
-            'v': settings.VK_API_VERSION,
-        }
+    return vk.api.call(
+        'post',
+        'messages.getLongPollServer',
     ).json()['response']
 
 
-def start():
+def start(_try=0, _try_limit=3):
+    if _try > _try_limit:
+        logger.error('Maximum retries exceeded with polling')
+        return
+
     logger.info('Starting vk polling')
     polling = _get_polling_server()
     ts = polling['ts']
     while True:
-        r = requests.get('https://{}?act=a_check&key={}&ts={}&wait=25&mode=2&version=2'.format(polling['server'], polling['key'], ts)).json()
+        r = requests.get(
+            'https://{}?act=a_check&key={}&ts={}&wait=25&mode=2&version=2'.format(
+                polling['server'],
+                polling['key'],
+                ts,
+            )
+        ).json()
+
+        if r.get('failed'):
+            logger.info('vk poll returned error: {}. Restarting.'.format(r['failed']))
+            return start(_try=_try + 1)
+
         ts = r['ts']
         for u in r['updates']:
             if u[0] == 4 and not has_flag(u[2], 2):
