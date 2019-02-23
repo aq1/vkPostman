@@ -29,7 +29,7 @@ def main():
     if arguments.daemonize:
         Daemonize(
             app='vk_postman_{}'.format(arguments.command),
-            pid=os.path.join(settings.PID_DIR_PATH, 'vk_postman_{}.pid'.format(command)),
+            pid=os.path.join(settings.PID_DIR_PATH, 'vk_postman_{}.pid'.format(arguments.command)),
             action=command,
         ).start()
         return
