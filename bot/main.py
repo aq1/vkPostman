@@ -1,6 +1,5 @@
 import telegram
 import telegram.ext
-from telegram.utils import request
 
 from utils.logging import logger
 import settings
@@ -43,8 +42,7 @@ bot_handler = telegram.ext.ConversationHandler(
 
 
 def start_bot():
-    _request = request.Request(con_pool_size=8)
-    _bot = telegram.Bot(token=settings.TELEGRAM_TOKEN, request=_request)
+    _bot = telegram.Bot(token=settings.TELEGRAM_TOKEN)
     updater = telegram.ext.Updater(bot=_bot)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(bot_handler)
