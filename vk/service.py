@@ -87,6 +87,12 @@ def start(_try=0, _try_limit=3):
     logger.info('Starting vk polling')
     polling = _get_polling_server()
     ts = polling['ts']
+
+    telegram.Bot(token=settings.TELEGRAM_TOKEN).send_message(
+        chat_id=settings.ADMIN_ID,
+        text='Starting vk polling',
+    )
+
     while True:
         r = requests.get(
             'https://{}?act=a_check&key={}&ts={}&wait=25&mode=2&version=2'.format(

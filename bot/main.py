@@ -51,4 +51,6 @@ def start_bot():
     logger.info('\n'.join(map(str, commands)))
     logger.info('Started Bot')
 
+    _bot.sendMessage(settings.ADMIN_ID, 'Started bot')
+
     updater.start_polling(clean=True)
