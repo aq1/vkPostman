@@ -2,6 +2,7 @@ import os
 import argparse
 
 import sentry_sdk
+from daemonize import Daemonize
 
 import settings
 import bot
@@ -20,11 +21,23 @@ if not settings.DEBUG:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('command', choices=COMMANDS.keys())
+    parser.add_argument('-d', '--daemonize', default=False, action='store_true')
 
     with open(settings.PID_FILE_PATH, 'w') as f:
         f.write(str(os.getpid()))
 
-    COMMANDS[parser.parse_args().command]()
+    arguments = parser.parse_args()
+    command = COMMANDS[arguments.command]
+
+    if arguments.daemonize:
+        Daemonize(
+            app='vk_postman_{}'.format(arguments.command),
+            pid=settings.PID_FILE_PATH,
+            action=command,
+        ).start()
+        return
+
+    command()
 
 
 if __name__ == '__main__':
