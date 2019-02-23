@@ -20,3 +20,5 @@ VK_API_VERSION = 5.74
 ADMIN_ID = ''
 
 SENTRY_URL = ''
+
+PID_FILE_PATH = os.path.join(BASE_DIR, 'PID_file.pid')

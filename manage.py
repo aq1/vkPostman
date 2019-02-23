@@ -1,3 +1,4 @@
+import os
 import argparse
 
 import sentry_sdk
@@ -19,6 +20,9 @@ if not settings.DEBUG:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('command', choices=COMMANDS.keys())
+
+    with open(settings.PID_FILE_PATH, 'w') as f:
+        f.write(str(os.getpid()))
 
     COMMANDS[parser.parse_args().command]()
 

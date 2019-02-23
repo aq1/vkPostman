@@ -108,3 +108,4 @@ vk_postman/static/
 settings/settings_local.py
 settings_local.py
 logs/
+*.pid

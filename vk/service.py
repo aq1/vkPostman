@@ -98,7 +98,7 @@ def start(_try=0, _try_limit=3):
 
         if r.get('failed'):
             logger.info('vk poll returned error: {}. Restarting.'.format(r['failed']))
-            return start(_try=_try + 1)
+            return start(_try=_try + 1, _try_limit=_try_limit)
 
         ts = r['ts']
         for u in r['updates']:
