@@ -23,16 +23,13 @@ def main():
     parser.add_argument('command', choices=COMMANDS.keys())
     parser.add_argument('-d', '--daemonize', default=False, action='store_true')
 
-    with open(settings.PID_FILE_PATH, 'w') as f:
-        f.write(str(os.getpid()))
-
     arguments = parser.parse_args()
     command = COMMANDS[arguments.command]
 
     if arguments.daemonize:
         Daemonize(
             app='vk_postman_{}'.format(arguments.command),
-            pid=settings.PID_FILE_PATH,
+            pid=os.path.join(settings.PID_DIR_PATH, 'vk_postman_{}.pid'.format(command)),
             action=command,
         ).start()
         return

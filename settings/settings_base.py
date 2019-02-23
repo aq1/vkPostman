@@ -21,4 +21,4 @@ ADMIN_ID = ''
 
 SENTRY_URL = ''
 
-PID_FILE_PATH = os.path.join(BASE_DIR, 'PID_file.pid')
+PID_DIR_PATH = BASE_DIR
