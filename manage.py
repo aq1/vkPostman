@@ -20,11 +20,13 @@ if not settings.DEBUG:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('command', choices=COMMANDS.keys())
+    arguments = parser.parse_args()
 
-    with open(settings.PID_FILE_PATH, 'w') as f:
+    pid_path = os.path.join(settings.PID_DIR_PATH, 'vk_postman_{}.pid'.format(arguments.command))
+    with open(pid_path, 'w') as f:
         f.write(str(os.getpid()))
 
-    COMMANDS[parser.parse_args().command]()
+    COMMANDS[arguments.command]()
 
 
 if __name__ == '__main__':
