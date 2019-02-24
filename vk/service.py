@@ -25,7 +25,14 @@ MESSAGE_FLAGS = [
 ]
 
 
-def send_message_from_vk_to_telegram(data):
+def get_vk_user(vk_id):
+    vk_user = mongo.users.get_vk_user(vk_id)
+    if not vk_user:
+        vk_user = mongo.users.save_vk_user(vk.api.get_user(vk_id))
+    return vk_user
+
+
+def send_message_from_vk_to_telegram(vk_user, data):
     """
     data[0]: event type
     data[1]: message_id
@@ -35,10 +42,9 @@ def send_message_from_vk_to_telegram(data):
     data[5]: text
     data[6]: extra?
     """
-    vk_id = data[3]
     text = data[5]
 
-    chat = mongo.chats.get_active_chat_by_vk_id(vk_id)
+    chat = mongo.chats.get_active_chat_by_vk_id(vk_user['id'])
 
     # If more commands will occur, this will be refactored
     if text == '/check':
@@ -46,10 +52,9 @@ def send_message_from_vk_to_telegram(data):
         text = _CHECK_MESSAGE
 
     if not chat:
-        vk.api.send_message(vk_id, 'Sorry! No active chats found for you.')
+        vk.api.send_message(vk_user['id'], 'Sorry! No active chats found for you.')
         return
 
-    vk_user = mongo.users.get_vk_user(vk_id)
     text = '<b>{} {}</b>\n{}'.format(
         vk_user['first_name'],
         vk_user['last_name'],
@@ -65,7 +70,7 @@ def send_message_from_vk_to_telegram(data):
         'post',
         'messages.markAsRead',
         data={
-            'user_id': vk_id,
+            'user_id': vk_user['id'],
         }
     )
 
@@ -119,8 +124,9 @@ def start(_try=0, _try_limit=3):
         ts = r['ts']
         for u in r['updates']:
             if u[0] == 4 and not has_flag(u[2], 2):
+                vk_user = get_vk_user(u['3'])
                 try:
-                    send_message_from_vk_to_telegram(u)
+                    send_message_from_vk_to_telegram(vk_user, u)
                 except:
                     logger.exception('vk_polling')
                     vk.api.send_message(u[3], _VK_POLLING_FAILED_MESSAGE)
