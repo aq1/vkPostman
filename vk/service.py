@@ -124,7 +124,7 @@ def start(_try=0, _try_limit=3):
         ts = r['ts']
         for u in r['updates']:
             if u[0] == 4 and not has_flag(u[2], 2):
-                vk_user = get_vk_user(u['3'])
+                vk_user = get_vk_user(u[3])
                 try:
                     send_message_from_vk_to_telegram(vk_user, u)
                 except:
