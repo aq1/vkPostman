@@ -8,6 +8,8 @@ import vk
 
 
 _VK_POLLING_FAILED_MESSAGE = 'Sorry. Something went wrong. We are investigating.'
+_CHECK_MESSAGE = '🤔 VK polling operational'
+
 MESSAGE_FLAGS = [
     65536,  # HIDDEN
     512,    # MEDIA
@@ -34,7 +36,15 @@ def send_message_from_vk_to_telegram(data):
     data[6]: extra?
     """
     vk_id = data[3]
+    text = data[5]
+
     chat = mongo.chats.get_active_chat_by_vk_id(vk_id)
+
+    # If more commands will occur, this will be refactored
+    if text == '/check':
+        chat = {'telegram_id': settings.ADMIN_ID}
+        text = _CHECK_MESSAGE
+
     if not chat:
         vk.api.send_message(vk_id, 'Sorry! No active chats found for you.')
         return
@@ -43,7 +53,7 @@ def send_message_from_vk_to_telegram(data):
     text = '<b>{} {}</b>\n{}'.format(
         vk_user['first_name'],
         vk_user['last_name'],
-        data[5],
+        text,
     )
     telegram.Bot(token=settings.TELEGRAM_TOKEN).send_message(
         chat_id=chat['telegram_id'],
