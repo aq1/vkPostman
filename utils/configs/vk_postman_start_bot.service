@@ -1,0 +1,5 @@
+[Unit]
+Description=vkPostman Bot
+
+[Service]
+ExecStart=/root/projects/vkPostman/.env/bin/python /root/projects/vkPostman/manage.py start_bot

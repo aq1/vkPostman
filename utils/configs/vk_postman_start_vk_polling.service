@@ -1,0 +1,5 @@
+[Unit]
+Description=vkPostman Vk Polling
+
+[Service]
+ExecStart=/root/projects/vkPostman/.env/bin/python /root/projects/vkPostman/manage.py start_vk_polling
