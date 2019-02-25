@@ -7,7 +7,6 @@ import mongo
 class Chats(BaseCommand):
     _COMMAND = 'chats'
     _DESCRIPTION = 'Show my chats.'
-    _SUCCESS_MSG = ''
 
     def _call(self, user, _bot, update, **kwargs):
         chats = list(mongo.chats.get_chats_history(user.id))

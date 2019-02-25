@@ -1,5 +1,6 @@
 import telegram
 import telegram.ext
+import telegram.utils.request
 
 from utils.logging import logger
 import settings
@@ -12,6 +13,7 @@ commands = [
     bot.commands.DisconnectCommand(),
     bot.commands.MessageToAdminCommand(pass_args=True),
     bot.commands.Chats(),
+    bot.commands.History(pass_args=True),
     bot.commands.RemoveChat(pass_args=True),
 ]
 
@@ -42,7 +44,8 @@ bot_handler = telegram.ext.ConversationHandler(
 
 
 def start_bot():
-    _bot = telegram.Bot(token=settings.TELEGRAM_TOKEN)
+    _request = telegram.utils.request.Request(con_pool_size=8)
+    _bot = telegram.Bot(token=settings.TELEGRAM_TOKEN, request=_request)
     updater = telegram.ext.Updater(bot=_bot)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(bot_handler)

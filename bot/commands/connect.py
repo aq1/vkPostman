@@ -16,7 +16,7 @@ class ConnectCommand(BaseCommand):
 
     def _connect(self, _bot, user, vk_id):
 
-        vk_user = vk.service.get_vk_user(vk_id)
+        vk_user = vk.functions.get_vk_user(vk_id)
 
         active_chat = mongo.chats.get_active_chat_by_vk_id(vk_id)
         if active_chat and active_chat['telegram_id'] != user['id']:
