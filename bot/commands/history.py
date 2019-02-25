@@ -12,11 +12,11 @@ class History(BaseCommand):
     def _format_message(msg):
         if msg['from_id'] == settings.VK_ADMIN_ID:
             msg = msg['body'].splitlines()
-            msg[0] = '▫️<b>{}</b>'.format(msg[0])
+            msg[0] = '▫<b>{}</b>'.format(msg[0])
             return '\n'.join(msg)
         else:
             user = mongo.users.get_vk_user(msg['from_id'])
-            return '▪️<b>{} {}</b>\n{}'.format(
+            return '▪<b>{} {}</b>\n{}'.format(
                 user['first_name'],
                 user['last_name'],
                 msg['body'],
