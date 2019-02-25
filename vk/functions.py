@@ -11,7 +11,7 @@ from utils.logging import logger
 _CHECK_MESSAGE = '🤔 VK polling operational'
 
 
-functools.lru_cache()
+@functools.lru_cache()
 def get_vk_user(vk_id):
     vk_user = mongo.users.get_vk_user(vk_id)
     if not vk_user:
@@ -19,7 +19,6 @@ def get_vk_user(vk_id):
     return vk_user
 
 
-@functools.lru_cache()
 def get_history(vk_id):
     return vk.api.call(
         'post',
