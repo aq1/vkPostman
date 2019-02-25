@@ -15,7 +15,7 @@ class History(BaseCommand):
             msg[0] = '▫<b>{}</b>'.format(msg[0])
             return '\n'.join(msg)
         else:
-            user = mongo.users.get_vk_user(msg['from_id'])
+            user = vk.functions.get_vk_user(msg['from_id'])
             return '▪<b>{} {}</b>\n{}'.format(
                 user['first_name'],
                 user['last_name'],

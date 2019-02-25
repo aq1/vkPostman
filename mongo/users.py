@@ -23,7 +23,6 @@ def save_telegram_user(user):
         pass
 
 
-@functools.lru_cache()
 def get_vk_user(vk_id):
     return db.vk_users.find_one({
         'id': vk_id,
