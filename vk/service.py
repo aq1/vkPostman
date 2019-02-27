@@ -24,6 +24,30 @@ MESSAGE_FLAGS = [
     1,      # UNREAD
 ]
 
+POLLING_ERRORS = {
+    1: (
+        'the event history went out of date '
+        'or was partially lost. the app can '
+        'continue receiving events using the '
+        'new ts value from the answer '
+    ),
+    2: (
+        'the key’s active period expired.'
+        'It\'s necessary to receive a key using'
+        'the messages.getLongPollServer method.'
+    ),
+    3: (
+        'user information was lost. '
+        'It\'s necessary to request a '
+        'new key and ts with the help '
+        'of the messages.getLongPollServer method.'
+    ),
+    4: (
+        'an invalid version number was '
+        'passed in the version parameter.'
+    ),
+}
+
 
 def has_flag(value, flag):
     while value > 0:
@@ -67,7 +91,7 @@ def start(_try=0, _try_limit=3):
         ).json()
 
         if r.get('failed'):
-            vk_logger.info('vk poll returned error: {}. Restarting.'.format(r['failed']))
+            vk_logger.error('{}: {}. Restarting.'.format(r['failed'], POLLING_ERRORS[r['failed']]))
             return start(_try=_try + 1, _try_limit=_try_limit)
 
         ts = r['ts']
