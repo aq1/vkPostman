@@ -1,7 +1,7 @@
 import telegram
 import requests
 
-from utils.logging import logger
+from utils.logging import vk_logger
 import settings
 import vk
 
@@ -42,10 +42,10 @@ def _get_polling_server():
 
 def start(_try=0, _try_limit=3):
     if _try > _try_limit:
-        logger.error('Maximum retries exceeded with polling')
+        vk_logger.error('Maximum retries exceeded with polling')
         return
 
-    logger.info('Starting vk polling')
+    vk_logger.info('Starting vk polling')
     polling = _get_polling_server()
     ts = polling['ts']
 
@@ -64,7 +64,7 @@ def start(_try=0, _try_limit=3):
         ).json()
 
         if r.get('failed'):
-            logger.info('vk poll returned error: {}. Restarting.'.format(r['failed']))
+            vk_logger.info('vk poll returned error: {}. Restarting.'.format(r['failed']))
             return start(_try=_try + 1, _try_limit=_try_limit)
 
         ts = r['ts']
@@ -74,7 +74,7 @@ def start(_try=0, _try_limit=3):
                 try:
                     vk.functions.send_message_from_vk_to_telegram(vk_user, u)
                 except:
-                    logger.exception('vk_polling')
+                    vk_logger.exception('vk_polling')
                     vk.api.send_message(u[3], _VK_POLLING_FAILED_MESSAGE)
                     continue
 

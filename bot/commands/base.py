@@ -1,6 +1,6 @@
 import telegram.ext
 
-from utils.logging import logger
+from utils.logging import bot_logger
 import mongo
 import bot
 
@@ -70,7 +70,7 @@ class BaseCommand(telegram.ext.CommandHandler):
             else:
                 ok = self._callback(user, _bot, update, **kwargs)
         except:
-            logger.exception('bot')
+            bot_logger.exception('bot')
             _bot.send_message(
                 chat_id=user.id,
                 text=self._COMMAND_FAILED_MESSAGE,

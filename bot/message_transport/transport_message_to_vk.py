@@ -2,7 +2,7 @@ import json
 
 import telegram.ext
 
-from utils.logging import logger
+from utils.logging import bot_logger
 
 import mongo
 import bot
@@ -45,7 +45,7 @@ class TransportMessageToVK(telegram.ext.RegexHandler):
         result = json.loads(result.text)
         if result.get('error'):
             update.message.reply_text('Sorry. Error happened. The incident is already reported')
-            logger.error(result)
+            bot_logger.error(result)
             return False
 
         return True

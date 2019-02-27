@@ -5,7 +5,7 @@ import telegram
 import vk
 import mongo
 import settings
-from utils.logging import logger
+from utils.logging import vk_logger
 
 
 _CHECK_MESSAGE = '🤔 VK polling operational'
@@ -71,4 +71,4 @@ def send_message_from_vk_to_telegram(vk_user, data):
         }
     )
 
-    logger.info('Sent message to telegram {}'.format(chat['telegram_id']))
+    vk_logger.info('Sent message to telegram {}'.format(chat['telegram_id']))

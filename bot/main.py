@@ -2,7 +2,7 @@ import telegram
 import telegram.ext
 import telegram.utils.request
 
-from utils.logging import logger
+from utils.logging import bot_logger
 import settings
 import bot
 
@@ -50,9 +50,9 @@ def start_bot():
     dispatcher = updater.dispatcher
     dispatcher.add_handler(bot_handler)
 
-    logger.info('Printing available commands')
-    logger.info('\n'.join(map(str, commands)))
-    logger.info('Started Bot')
+    bot_logger.info('Printing available commands')
+    bot_logger.info('\n'.join(map(str, commands)))
+    bot_logger.info('Started Bot')
 
     _bot.sendMessage(settings.ADMIN_ID, 'Started bot')
 
