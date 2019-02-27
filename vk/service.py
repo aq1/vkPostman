@@ -1,5 +1,3 @@
-import time
-
 import telegram
 import requests
 
@@ -29,18 +27,18 @@ POLLING_ERRORS = {
         'the event history went out of date '
         'or was partially lost. the app can '
         'continue receiving events using the '
-        'new ts value from the answer '
+        'new ts value from the answer'
     ),
     2: (
         'the key’s active period expired.'
-        'It\'s necessary to receive a key using'
-        'the messages.getLongPollServer method.'
+        'It\'s necessary to receive a key using '
+        'the messages.getLongPollServer method'
     ),
     3: (
         'user information was lost. '
         'It\'s necessary to request a '
         'new key and ts with the help '
-        'of the messages.getLongPollServer method.'
+        'of the messages.getLongPollServer method'
     ),
     4: (
         'an invalid version number was '
@@ -80,15 +78,23 @@ def start_polling(_try=0, _try_limit=3):
 
     while True:
         r = requests.get(
-            'https://{}?act=a_check&key={}&ts={}&wait=25&mode=2&version=2'.format(
-                polling['server'],
-                polling['key'],
-                ts,
-            )
+            'https://{}'.format(polling['server']),
+            params={
+                'key': polling['key'],
+                'ts': ts,
+                'act': 'a_check',
+                'wait': 25,
+                'mode': 2,
+                'version': 2,
+            }
         ).json()
 
         if r.get('failed'):
-            vk_logger.info('{}: {}. Restarting.'.format(r['failed'], POLLING_ERRORS[r['failed']]))
+            vk_logger.info('{}: {}. {} Restarting.'.format(
+                r['failed'],
+                polling['key'],
+                POLLING_ERRORS[r['failed']]
+            ))
             return start_polling(_try=_try + 1, _try_limit=_try_limit)
 
         ts = r['ts']
