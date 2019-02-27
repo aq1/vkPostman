@@ -1,3 +1,5 @@
+import time
+
 import telegram
 import requests
 
@@ -43,7 +45,8 @@ def _get_polling_server():
 def start(_try=0, _try_limit=3):
     if _try > _try_limit:
         vk_logger.error('Maximum retries exceeded with polling')
-        return
+        time.sleep(2)
+        return start()
 
     vk_logger.info('Starting vk polling')
     polling = _get_polling_server()
