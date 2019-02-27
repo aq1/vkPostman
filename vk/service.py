@@ -63,23 +63,20 @@ def _get_polling_server():
     return vk.api.call(
         'post',
         'messages.getLongPollServer',
-    ).json()['response']
+    ).json()
 
 
-def start(_try=0, _try_limit=3):
+def start_polling(_try=0, _try_limit=3):
     if _try > _try_limit:
         vk_logger.error('Maximum retries exceeded with polling')
-        time.sleep(2)
-        return start()
+        return
 
-    vk_logger.info('Starting vk polling')
     polling = _get_polling_server()
-    ts = polling['ts']
+    if not polling:
+        return start_polling(_try=_try + 1, _try_limit=_try_limit)
 
-    telegram.Bot(token=settings.TELEGRAM_TOKEN).send_message(
-        chat_id=settings.ADMIN_ID,
-        text='Starting vk polling',
-    )
+    polling = polling['response']
+    ts = polling['ts']
 
     while True:
         r = requests.get(
@@ -91,8 +88,8 @@ def start(_try=0, _try_limit=3):
         ).json()
 
         if r.get('failed'):
-            vk_logger.error('{}: {}. Restarting.'.format(r['failed'], POLLING_ERRORS[r['failed']]))
-            return start(_try=_try + 1, _try_limit=_try_limit)
+            vk_logger.info('{}: {}. Restarting.'.format(r['failed'], POLLING_ERRORS[r['failed']]))
+            return start_polling(_try=_try + 1, _try_limit=_try_limit)
 
         ts = r['ts']
         for u in r['updates']:
@@ -104,6 +101,15 @@ def start(_try=0, _try_limit=3):
                     vk_logger.exception('vk_polling')
                     vk.api.send_message(u[3], _VK_POLLING_FAILED_MESSAGE)
                     continue
+
+
+def start():
+    vk_logger.info('Starting vk polling')
+    telegram.Bot(token=settings.TELEGRAM_TOKEN).send_message(
+        chat_id=settings.ADMIN_ID,
+        text='Starting vk polling',
+    )
+    start_polling()
 
 
 if __name__ == '__main__':
