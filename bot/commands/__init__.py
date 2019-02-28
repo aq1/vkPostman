@@ -5,5 +5,5 @@ from bot.commands.disconnect import DisconnectCommand
 from bot.commands.chats import Chats
 from bot.commands.history import History
 from bot.commands.remove_chat import RemoveChat
-from bot.commands.start import StartCommand
 from bot.commands.help import HelpCommand
+from bot.commands.start import StartCommand
