@@ -76,6 +76,8 @@ def start_polling(_try=0, _try_limit=3):
     polling = polling['response']
     ts = polling['ts']
 
+    vk_logger.info('Polling with the key: {}'.format(polling['key']))
+
     while True:
         r = requests.get(
             'https://{}'.format(polling['server']),
