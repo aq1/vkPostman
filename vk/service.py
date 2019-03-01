@@ -64,13 +64,22 @@ def _get_polling_server():
     ).json()
 
 
+def _log_polling_error(code, key):
+    vk_logger.info('{}: {}. {} Restarting.'.format(
+        code,
+        key,
+        POLLING_ERRORS.get(code)
+    ))
+
+
 def start_polling(_try=0, _try_limit=3):
     if _try > _try_limit:
         vk_logger.error('Maximum retries exceeded with polling')
         return
 
     polling = _get_polling_server()
-    if not polling:
+    if not polling.get('response'):
+        _log_polling_error(polling.get('failed'), polling['key'])
         return start_polling(_try=_try + 1, _try_limit=_try_limit)
 
     polling = polling['response']
@@ -92,11 +101,7 @@ def start_polling(_try=0, _try_limit=3):
         ).json()
 
         if r.get('failed'):
-            vk_logger.info('{}: {}. {} Restarting.'.format(
-                r['failed'],
-                polling['key'],
-                POLLING_ERRORS[r['failed']]
-            ))
+            _log_polling_error(polling.get('failed'), polling['key'])
             return start_polling(_try=_try + 1, _try_limit=_try_limit)
 
         ts = r['ts']
