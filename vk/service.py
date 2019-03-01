@@ -64,10 +64,10 @@ def _get_polling_server():
     ).json()
 
 
-def _log_polling_error(code, key):
+def _log_polling_error(code, polling):
     vk_logger.info('{}: {}. {} Restarting.'.format(
         code,
-        key,
+        polling.get('key', polling),
         POLLING_ERRORS.get(code)
     ))
 
@@ -79,7 +79,7 @@ def start_polling(_try=0, _try_limit=3):
 
     polling = _get_polling_server()
     if not polling.get('response'):
-        _log_polling_error(polling.get('failed'), polling['key'])
+        _log_polling_error(polling.get('failed'), polling)
         return start_polling(_try=_try + 1, _try_limit=_try_limit)
 
     polling = polling['response']
@@ -101,7 +101,7 @@ def start_polling(_try=0, _try_limit=3):
         ).json()
 
         if r.get('failed'):
-            _log_polling_error(polling.get('failed'), polling['key'])
+            _log_polling_error(polling.get('failed'), polling)
             return start_polling(_try=_try + 1, _try_limit=_try_limit)
 
         ts = r['ts']
